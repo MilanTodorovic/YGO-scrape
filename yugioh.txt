@@ -1,0 +1,75 @@
+**Monster** // ubaciti OCG/TCG oznaku za svaku kartu u bazu
+
+- CARD TYPE <a title = "Card type">.find_parent(th).find_parent(tr).find_next_siblings()
+
+- ATTRIBUTE <a title="Attribute">.find_parent(th).find_next_sibling(td).a.text
+	!!! ima vise a, prvo je to, ali za svaki slucaj traziti po has_att(title)
+
+- TYPES <a title="Type">.find_parent(th).find_next_sibling(td).find_all(a).text
+
+# PENDULUM LINK SYNCHRO XYZ TUNER # izbeci, naci sve posebne mehanike
+
+	- FUSION
+	# postoje Synchro Fusion karte, isfiltrirati prema Synchro u Materials
+
+	- RITUAL
+
+	- TOKEN
+	# https://yugioh.fandom.com/wiki/Monster_Token
+
+	- EFFECT
+	# vrlo je bitno da li je cudoviste Effect ili ne zbog Fusion i ostalog
+
+
+- RANK ! # broj 0- <a title="Rank">.find_parent(th).find_next_sibling(td).a.text
+
+
+- LEVEL / LINK ARROWS !
+	- value <a title="Level"> ima 2 a, prvo je pravo / <a title="Link Arrow">.find_parent(th).find_next_sibling(td).find_all(a)
+	!!! ima a tagova za neke slike, a.text == ''
+
+- PENDULUM SCALE !
+
+- ATK (moze biti ?) / DEF (moze biti ?) / LINK ! <td><a title=...>
+	- value <a title = "Link Rating">.find_parent(th).find_next_sibling(td).find_all(a)
+
+- LIMITATION TEXT (za tokene) <a title="Limitation text">.find_parent(th).find_next_sibling(td).text
+
+- SUMMONED... <a title="Summon">.find_parent(th).text (izvuci frazu iz th?) find_next_sibling(td).find_all(a)
+	- U DB OSTAVITI NEKI PLACE HOLDER ZA ID KARTE
+
+- PASSCODE <a title=Passcode>
+# indeksirati karte u DB po ovome?
+
+- RITUAL SPELL CARD ! <a title="Ritual Spell Card">.find_parent(th).find_next_sibling(td).a.text
+
+- FUSION MATERIAL ! <a title="Fusion Material">.find_parent(th).find_next_sibling(td).find_all(a).text
+	- u DB polje Fusion=true, requirement=[(1, psychic, ime cudovista).(...)]
+
+- MATERIALS ! <th>.text == Materials     find_next_sibling(td)
+# isfiltrirati ovde Synchro, Tuner(s)
+	value <td>.text
+
+- CARD EFFECT TYPES ! <th>.text  // POPISATI SVE VRSTE EFEKATA, grupisati ih: Continuous, Ignition, Trigger (including Flip effects)[procuiti], Quick
+# PENDULUM moze da ima dve potkategorije, find_all() pa dl[0] == ul[0]
+
+	- Pendulum effect <dl><dt>.text
+		value <ul><li><a>.text
+
+	- Monster Effect <dl>
+		value <ul><li><a>.text
+
+- STATUSES <a title="Status">.find_parent(th).find_next_sibling(td).find_all(a)
+
+- DESCRIPTION ENGLISH <table id="collapsibleTable0">.tbody.find_all(tr)[-1].td.text
+	!!! svaki apostrof dobija \ pre sebe, vidljivo u stampanom tekstu
+	!!! voditi racuna o formatiranju, neke imaju bulletpoints
+
+Effects that depend on a monster's Level, such as "Gravity Bind",
+"Burden of the Mighty", and "Roulette Barrel", have no effect 
+on Xyz Monsters.
+
+- NAPRAVITI VISE DB, JEDNU ZA FUSION, JEDNU ZA SYNCHRO ITD.
+- EXTRA DECK SIDE DECK proveriti sta je to
+- IZBECI SPELL/TRAP KOJE SE ODNOSE NA TURNER ITD.
+- UNION MONSTER nije eksplicitno naznaceno, cudovista koja se kace na druga cudovista, u opisu pise Equip Card/equip
